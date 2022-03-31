@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{ category.description|truncatewords:150 }}
+    {% else %}
+        Welcome to the shop where all you need is welcome
+    {% endif %}
+{% endblock %}
+{% block title %}
+    {% if category %}
+        {{ category.name }} -Super Store
+    {% else %}
+        See our new collections - Super Store
+    {% endif %}
+{% endblock %}
+{% block content %}
+{% if category %}
+<div>
+    <div class="row my_row_class">
+        <div class="max-auto">
+            <p><a href="{% url 'shop:allProductCategory' %}">Our Product Collections</a></p>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="max_auto">
+    {% if category %}
+    <img class="category_image" src="{{ category.image.url }}" alt="{{ category.name }}">
+</div>
+<br>
+<div>
+    <h1 class="text-center category_name">{{ category.name }}</h1>
+    <p class="text-justify">{{ category.description }}</p>
+</div>
+    {% else %}
+    <div>
+        <img class="category_image category_image_padding" src="{% static 'image/plants-index.png' %}" alt="our products">
+    </div>
+<br>
+<div>
+    <h1 class="text-center category_name">Our Product Collections</h1>
+    <p class="text-center" style="font-family: Perpetua; font-size:19px;">Get your garden ready with our huge range of garden flowers, plants & more.</p>
+</div>
+    {% endif %}
+<div class="container">
+    <div class="row max_auto">
+        {% for product in products.object_list %}
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4 col-lg-4">
+            <div class="card text-center" style="min-width : 18rem;">
+                <a href="{{ product.get_url }}"><img class="card-img-top" src="{{ product.image.url }}" alt="{{ product.name }}" width="150px" height="200px" style="float:left; object-fit:cover;"></a>
+            <div class="card-body">
+                <h4>{{ product.name }}</h4>
+                <p>₹{{ product.price }}</p>
+            </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="max_auto">
+        {% if products.paginator.num_pages > 1 %}
+        <hr>
+        <div class="text-center">
+            {% for page in products.paginator.page_range %}
+                <a href="?page={{page}}" class="btn btn-light btn-sm {% if products.number == page %} active {% endif %}">{{ page }}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <br>
+</div>
+{% endblock %}

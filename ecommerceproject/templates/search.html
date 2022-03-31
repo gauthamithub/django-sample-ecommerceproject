@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+        We have variety of products like plants, seeds, fertilizers and gardening tools.
+{% endblock %}
+{% block title %}
+    Search
+{% endblock %}
+{% block content %}
+<div>
+    <p class="text-center my-search-text">You are searched for :<b>"{{ query }}"</b></p>
+</div>
+<div class="container">
+    <div class="row max_auto">
+        {% for product in products %}
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4 col-lg-4">
+            <div class="card text-center" style="min-width : 18rem;">
+                <a href="{{ product.get_url }}"><img class="card-img-top" src="{{ product.image.url }}" alt="{{ product.name }}" width="150px" height="200px" style="float:left; object-fit:cover;"></a>
+            <div class="card-body">
+                <h4>{{ product.name }}</h4>
+                <p>₹{{ product.price }}</p>
+            </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="row max-auto">
+            <p class="text-center my-search-text">0 result found</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
